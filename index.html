@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>AddMe Lite</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#111111">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>AddMe Lite</h1>
+    <p class="subtitle">Two-shot couple/group photo composer (on-device)</p>
+  </header>
+
+  <main>
+    <section id="capture">
+      <div class="video-wrap">
+        <video id="video" playsinline autoplay muted></video>
+        <canvas id="overlay" class="ghost"></canvas>
+      </div>
+      <div class="controls">
+        <button id="btnStart">Start Camera</button>
+        <button id="btnShotA" disabled>Capture A</button>
+        <button id="btnShotB" disabled>Capture B</button>
+        <label class="ghostctl">
+          Ghost opacity
+          <input type="range" id="ghostAlpha" min="0" max="1" step="0.05" value="0.35">
+        </label>
+      </div>
+      <p class="hint">
+        Step 1: Frame your group (you are NOT in the frame) → <b>Capture A</b>.<br/>
+        Step 2: Hand the phone to someone, step into frame. Align with the ghost outline → <b>Capture B</b>.
+      </p>
+    </section>
+
+    <section id="editor" class="hidden">
+      <h2>Blend</h2>
+      <div class="canvas-wrap">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="controls">
+        <label>Brush
+          <input type="range" id="brushSize" min="5" max="80" value="28">
+        </label>
+        <label>Feather
+          <input type="range" id="feather" min="0" max="1" step="0.05" value="0.2">
+        </label>
+        <button id="btnErase" class="toggle active">Erase top (reveal A)</button>
+        <button id="btnRestore" class="toggle">Restore top</button>
+        <button id="btnResetMask">Reset Mask</button>
+        <button id="btnExport">Export PNG</button>
+      </div>
+      <p class="hint">Tip: Zoom with your fingers (pinch) on the page if needed, then paint to blend the two shots.</p>
+      <div id="exportLink"></div>
+    </section>
+  </main>
+
+  <footer>
+    <small>All processing happens locally in your browser. Install to home screen for app-like usage.</small>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
